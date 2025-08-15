@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    padding-top: 45px;
+    overflow-y: scroll;
+    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.main-content {
+    padding: 0;
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* 确保所有容器都是全宽 */
+.ui.container {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* 确保Grid组件占满全宽 */
+.ui.grid {
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+/* 确保Menu组件占满全宽 */
+.ui.menu {
+    width: 100% !important;
+}
+
+/* 导航栏固定定位和位置调整 */
+.ui.menu.borderless {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: white !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 移除所有固定宽度限制 */
+.ui.container,
+.ui.grid,
+.ui.menu {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+.small-icon .icon {
+    font-size: 1em !important;
+}
+
+.custom-footer {
+    font-size: 1.1em;
+}
+
+/* Footer固定在底部且透明 */
+.ui.segment.vertical {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 !important;
+    padding: 20px 0 !important;
+    background: transparent !important;
+    border: none !important;
+    z-index: 1000 !important;
+    box-shadow: none !important;
+}
+
+.custom-footer {
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+.custom-footer a {
+    color: #1976d2 !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}
+
+.custom-footer a:hover {
+    color: #1565c0 !important;
+    text-decoration: underline !important;
+}
+
+/* 为固定Footer留出底部空间 */
+body {
+    padding-bottom: 80px !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+}

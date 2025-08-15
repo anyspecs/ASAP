@@ -1,0 +1,9 @@
+.idea
+.vscode
+upload
+*.exe
+*.db
+build
+start.sh
+asap
+logs
