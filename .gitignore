@@ -1,9 +1,11 @@
 .idea
 .vscode
 upload
+uploads
 *.exe
 *.db
 build
 start.sh
 asap
 logs
+env.config

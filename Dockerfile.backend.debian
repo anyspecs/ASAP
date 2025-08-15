@@ -1,0 +1,62 @@
+# 后端构建阶段 - 使用 Debian 基础镜像（更好的 SQLite3 支持）
+FROM golang:1.21-bullseye AS builder
+
+# 安装构建依赖
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libc6-dev \
+    libsqlite3-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+# 构建应用
+ENV CGO_ENABLED=1
+ENV GOOS=linux
+
+RUN go build \
+    -ldflags "-s -w -X 'gin-template/common.Version=$(cat VERSION)'" \
+    -o asap
+
+# 生产阶段 - 使用轻量级的 Debian 镜像
+FROM debian:bullseye-slim
+
+# 安装运行时依赖
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    sqlite3 \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# 创建非root用户
+RUN groupadd -g 1000 backend && \
+    useradd -m -s /bin/bash -u 1000 -g backend backend
+
+# 创建必要的目录
+RUN mkdir -p /data/database /data/upload /app/logs && \
+    chown -R backend:backend /data /app
+
+# 复制应用
+COPY --from=builder /build/asap /usr/local/bin/asap
+RUN chmod +x /usr/local/bin/asap
+
+# 设置工作目录
+WORKDIR /data
+
+# 切换到非root用户
+USER backend
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/status || exit 1
+
+# 暴露端口
+EXPOSE 3000
+
+# 启动命令
+ENTRYPOINT ["/usr/local/bin/asap"]

@@ -15,13 +15,24 @@ func createRootAccountIfNeed() error {
 	var user User
 	//if user.Status != common.UserStatusEnabled {
 	if err := DB.First(&user).Error; err != nil {
-		common.SysLog("no user exists, create a root user for you: username is root, password is 123456")
-		hashedPassword, err := common.Password2Hash("123456")
+		// 从环境变量获取默认凭据，如果没有设置则使用安全的默认值
+		defaultUsername := os.Getenv("DEFAULT_ROOT_USERNAME")
+		if defaultUsername == "" {
+			defaultUsername = "admin"
+		}
+
+		defaultPassword := os.Getenv("DEFAULT_ROOT_PASSWORD")
+		if defaultPassword == "" {
+			defaultPassword = "ChangeMe123!"
+		}
+
+		common.SysLog("no user exists, create a root user for you: username is " + defaultUsername + ", password is " + defaultPassword)
+		hashedPassword, err := common.Password2Hash(defaultPassword)
 		if err != nil {
 			return err
 		}
 		rootUser := User{
-			Username:    "root",
+			Username:    defaultUsername,
 			Password:    hashedPassword,
 			Role:        common.RoleRootUser,
 			Status:      common.UserStatusEnabled,
