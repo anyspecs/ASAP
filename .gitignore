@@ -9,3 +9,17 @@ start.sh
 asap
 logs
 env.config
+
+# Node.js dependencies
+node_modules/
+web/node_modules/
+**/node_modules/
+
+# Package lock files
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Build outputs
+web/build/
+web/dist/
