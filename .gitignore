@@ -23,3 +23,7 @@ web/node_modules/
 # Build outputs
 web/build/
 web/dist/
+cloudflare/
+
+ssl/
+.env

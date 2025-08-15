@@ -52,75 +52,201 @@
 - **HTTP Client**: Axios
 - **Build Tool**: Create React App
 
-## Deployment
+## Quick Start
 
-### Docker Deployment (Recommended)
+### Docker (Recommended)
+
 ```bash
-# Start Redis container
-docker run -d --name redis-asap -p 6379:6379 redis:7-alpine
+# 1. Clone project
+git clone https://github.com/anyspecs/asap.git
+cd asap
 
-# Start application
-docker run -d --name anyspecs \
-  --restart always \
-  -p 3000:3000 \
-  -v /path/to/data:/data \
-  -e REDIS_CONN_STRING=redis://host.docker.internal:6379 \
-  anyspecs/asap:latest
+# 2. Configure environment variables
+cp env.example .env
+# Edit .env file and set necessary environment variables
+
+# 3. Start all services with one command
+docker-compose up -d
+
+# 4. Check service status
+docker-compose ps
+
+# 5. Access application
+# Frontend: http://localhost or https://localhost
+# Backend API: http://localhost:3000
 ```
 
-### Manual Deployment
-1. **Clone Project**
-   ```bash
-   git clone https://github.com/anyspecs/asap.git
-   cd asap
-   ```
+### Detailed Configuration Steps
 
-2. **Build Frontend**
-   ```bash
-   cd web
-   npm install
-   export NODE_OPTIONS="--openssl-legacy-provider"
-   npm run build
-   cd ..
-   ```
+#### 1. Environment Variables Configuration
 
-3. **Build Backend**
-   ```bash
-   go mod download
-   go build -o asap
-   ```
+Based on `env.config` file:
 
-4. **Start Application**
-   ```bash
-   chmod +x start.sh
-   ./start.sh
-   ```
-
-5. **Access Application**
-   Open browser and visit [http://localhost:3000](http://localhost:3000)
-
-## Configuration
-
-### Environment Variables
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `REDIS_CONN_STRING` | Redis connection string | `redis://localhost:6379` |
-| `SESSION_SECRET` | Session secret key | `your-secret-key` |
-| `SQL_DSN` | Database connection string | `root:pass@tcp(localhost:3306)/db` |
-| `UPLOAD_PATH` | File upload path | `./upload` |
-| `PORT` | Service port | `3000` |
-
-### Command Line Arguments
 ```bash
+# Redis Configuration
+REDIS_PASSWORD=your_secure_password
+REDIS_PORT=6380
+
+# Application Configuration
+SESSION_SECRET=your_session_strong_password
+UPLOAD_PATH=/data/upload
+DB_PATH=/data/database
+
+# Domain Configuration
+DOMAIN=your-domain.com
+ENABLE_TLS=true
+
+# Default Admin Account
+DEFAULT_ROOT_USERNAME=admin
+DEFAULT_ROOT_PASSWORD=your_admin_init_pwd
+```
+
+#### 2. SSL Certificate Configuration
+
+See `setupssl/ssl-setup.md` for details.
+
+#### 3. Start Services
+
+```bash
+# Build and start all services
+docker-compose up -d --build
+
+# Check service status
+docker-compose ps
+
+# View logs
+docker-compose logs -f frontend
+docker-compose logs -f backend
+docker-compose logs -f redis
+```
+
+#### 4. Service Management
+
+```bash
+# Stop all services
+docker-compose down
+
+# Restart specific service
+docker-compose restart frontend
+docker-compose restart backend
+
+# Rebuild and start
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
+
+# View resource usage
+docker stats
+```
+
+### Port Configuration
+
+| Service | Port | Description |
+|---------|------|-------------|
+| Frontend | 80/443 | HTTP/HTTPS access port |
+| Backend | 3000 | API service port (local access only) |
+| Redis | 6380 | Cache service port (local access only) |
+
+### Data Persistence
+
+```yaml
+volumes:
+  redis_data:      # Redis data
+  backend_data:    # Backend data (database, uploaded files)
+  backend_logs:    # Backend logs
+  frontend_logs:   # Frontend logs
+```
+
+### Health Checks
+
+```bash
+# Check service health status
+docker-compose ps
+
+# Manual health check
+curl -f http://localhost:3000/api/status
+curl -f http://localhost/api/status
+
+# View health check logs
+docker-compose logs frontend | grep health
+```
+
+### Monitoring and Maintenance
+
+#### Log Management
+```bash
+# View real-time logs
+docker-compose logs -f --tail=100
+
+# Clean logs
+docker system prune -f
+
+# Log rotation configuration
+# Configure logrotate on host machine
+```
+
+#### Backup Strategy
+```bash
+# Backup data
+docker run --rm -v anyspecs_backend_data:/data -v $(pwd):/backup \
+  alpine tar czf /backup/asap-backup-$(date +%Y%m%d).tar.gz /data
+
+# Restore data
+docker run --rm -v anyspecs_backend_data:/data -v $(pwd):/backup \
+  alpine tar xzf /backup/asap-backup-20250101.tar.gz -C /data
+```
+
+### Production Environment Deployment
+
+#### Security Configuration
+```bash
+# Firewall configuration
+ufw allow 80/tcp
+ufw allow 443/tcp
+ufw enable
+
+# Disable root login
+# Configure SSH key authentication
+# Regularly update system and Docker images
+```
+
+#### High Availability Configuration
+```bash
+# Use Docker Swarm or Kubernetes
+docker swarm init
+docker stack deploy -c docker-compose.yml asap
+
+# Load balancer configuration
+# Database master-slave replication
+# Redis cluster configuration
+```
+
+## Manual Deployment
+
+### 1. Download and Run
+```bash
+# Download latest version
+wget https://github.com/anyspecs/releases/latest/download/asap-linux-amd64 -O asap
+chmod +x asap
+
+# Start application
 ./asap --port 3000 --log-dir ./logs
 ```
 
-| Argument | Description | Default |
-|----------|-------------|---------|
-| `--port` | Service port | `3000` |
-| `--log-dir` | Log directory | Not saved |
-| `--version` | Show version | - |
-| `--help` | Show help | - |
+### 2. Configure Redis (Optional)
+```bash
+# Start Redis
+docker run -d --name redis-asap -p 6379:6379 redis:7-alpine
+
+# Set environment variable
+export REDIS_CONN_STRING=redis://localhost:6379
+./asap --port 3000 --log-dir ./logs
+```
+
+### 3. Access Management Interface
+1. Visit http://localhost:3000
+2. Login with root account
+3. Enter system settings to configure SMTP, OAuth, etc.
 
 ## System Configuration
 
@@ -153,33 +279,6 @@ Configure SMTP server in system settings, supporting:
 - **Memory**: 2GB+
 - **Storage**: 10GB+ available space
 - **Redis**: For caching and session storage
-
-## Quick Start
-
-### 1. Download and Run
-```bash
-# Download latest version
-wget https://github.com/anyspecs/releases/latest/download/asap-linux-amd64 -O asap
-chmod +x asap
-
-# Start application
-./asap --port 3000
-```
-
-### 2. Configure Redis (Optional)
-```bash
-# Start Redis
-docker run -d --name redis-asap -p 6379:6379 redis:7-alpine
-
-# Set environment variable
-export REDIS_CONN_STRING=redis://localhost:6379
-./asap
-```
-
-### 3. Access Management Interface
-1. Visit http://localhost:3000
-2. Login with root account
-3. Enter system settings to configure SMTP, OAuth, etc.
 
 ## Contributing
 

@@ -9,14 +9,14 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}🚀 启动 ASAP 前后端分离容器服务...${NC}"
 
 # 检查环境变量文件
-if [ ! -f env.config ]; then
-    echo -e "${RED}❌ 错误: env.config 文件不存在${NC}"
-    echo "请配置 env.config 文件中的环境变量"
+if [ ! -f .env ]; then
+    echo -e "${RED}❌ 错误: .env 文件不存在${NC}"
+    echo "请配置 .env 文件中的环境变量"
     exit 1
 fi
 
 # 加载环境变量
-source env.config
+source .env
 
 # 检查必要的环境变量
 if [ -z "$REDIS_PASSWORD" ] || [ -z "$SESSION_SECRET" ]; then

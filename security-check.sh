@@ -46,8 +46,8 @@ fi
 
 # 检查Redis连接
 echo -e "${YELLOW}检查Redis连接...${NC}"
-if [ -f env.config ]; then
-    source env.config
+if [ -f .env ]; then
+    source .env
     if docker-compose exec redis redis-cli -a "$REDIS_PASSWORD" info server 2>/dev/null | grep -q "redis_version"; then
         echo -e "${GREEN}✅ Redis连接正常${NC}"
     else

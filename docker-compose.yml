@@ -4,7 +4,7 @@ services:
     image: redis:7-alpine
     container_name: redis-asap
     env_file:
-      - env.config
+      - .env
     command: >
       redis-server 
       --requirepass ${REDIS_PASSWORD}
@@ -39,7 +39,7 @@ services:
       dockerfile: Dockerfile.backend.debian
     container_name: asap-backend
     env_file:
-      - env.config
+      - .env
     ports:
       - "127.0.0.1:3000:3000"  # 只绑定到本地回环地址
     volumes:
@@ -54,6 +54,8 @@ services:
       - DB_FILE=asap.db
       - PORT=3000
       - GIN_MODE=release
+      - DOMAIN=${DOMAIN}
+      - ENABLE_TLS=${ENABLE_TLS:-true}
     restart: unless-stopped
     networks:
       - asap_internal
@@ -76,11 +78,14 @@ services:
         VERSION: ${VERSION:-v1.0.0}
     container_name: asap-frontend
     ports:
-      - "80:80"  # 前端直接暴露到外网
+      - "80:80"   # HTTP端口
+      - "443:443" # HTTPS端口
     volumes:
       - frontend_logs:/var/log/nginx
+      - ./ssl:/etc/nginx/ssl:ro  # SSL证书目录
     environment:
       - NODE_ENV=production
+      - DOMAIN=${DOMAIN}
     restart: unless-stopped
     networks:
       - asap_external
