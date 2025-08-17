@@ -27,7 +27,7 @@ const About = () => {
   }, []);
 
   return (
-    <>
+    <div className="page-container">
       <Segment>
         {aboutLoaded && about === '' ? (
           <>
@@ -44,7 +44,7 @@ const About = () => {
           </>
         )}
       </Segment>
-    </>
+    </div>
   );
 };
 

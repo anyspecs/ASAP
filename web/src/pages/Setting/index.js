@@ -37,9 +37,11 @@ const Setting = () => {
   }
 
   return (
-    <Segment>
-      <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
-    </Segment>
+    <div className="page-container">
+      <Segment>
+        <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+      </Segment>
+    </div>
   );
 };
 

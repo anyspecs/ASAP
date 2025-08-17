@@ -6,6 +6,14 @@
   padding: 2rem 1rem;
 }
 
+/* 确保所有section都使用相同的宽度 */
+.home-container .section-card,
+.home-container .hero-section {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Hero Section */
 .hero-section {
   display: grid;

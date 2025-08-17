@@ -2,7 +2,7 @@ import React from 'react';
 import { Segment, Header } from 'semantic-ui-react';
 
 const NotFound = () => (
-  <>
+  <div className="page-container">
     <Header
       block
       as="h4"
@@ -14,7 +14,7 @@ const NotFound = () => (
     <Segment attached="bottom">
       未找到所请求的页面
     </Segment>
-  </>
+  </div>
 );
 
 export default NotFound;

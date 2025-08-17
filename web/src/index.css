@@ -34,6 +34,13 @@ code {
     margin-bottom: 0; /* 确保没有底部margin */
 }
 
+/* 通用页面容器样式 - 统一所有页面宽度 */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
 /* 确保所有容器都是全宽 */
 .ui.container {
     max-width: none !important;
