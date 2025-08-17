@@ -12,6 +12,7 @@ import {
 } from 'semantic-ui-react';
 import { API, getSystemName, isAdmin, isMobile, showSuccess } from '../helpers';
 import '../index.css';
+import './Header.css';
 
 // Header Buttons
 const headerButtons = [
@@ -74,17 +75,20 @@ const Header = () => {
       if (isMobile) {
         return (
           <Menu.Item
+            key={button.name}
             onClick={() => {
               navigate(button.to);
               setShowSidebar(false);
             }}
+            className="mobile-nav-item"
           >
+            <Icon name={button.icon} />
             {button.name}
           </Menu.Item>
         );
       }
       return (
-        <Menu.Item key={button.name} as={Link} to={button.to}>
+        <Menu.Item key={button.name} as={Link} to={button.to} className="nav-item">
           <Icon name={button.icon} />
           {button.name}
         </Menu.Item>
@@ -94,55 +98,57 @@ const Header = () => {
 
   if (isMobile()) {
     return (
-      <>
-        <Menu
-          borderless
-          size='large'
-          style={
-            showSidebar
-              ? {
-                  borderBottom: 'none',
-                  marginBottom: '0',
-                  borderTop: 'none',
-                  height: '51px',
-                  width: '100%'
-                }
-              : { borderTop: 'none', height: '52px', width: '100%' }
-          }
-        >
-          <div style={{ width: '100%', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Menu.Item as={Link} to='/'>
-              <img
-                src='/logo.png'
-                alt='logo'
-                style={{ marginRight: '0.75em' }}
-              />
-              <div style={{ fontSize: '20px' }}>
-                <b>{systemName}</b>
+      <header className="mobile-header">
+        <div className="mobile-header-content">
+          <div className="mobile-header-left">
+            <Menu.Item as={Link} to='/' className="logo-item">
+              <div className="logo-container">
+                <div className="logo-icon">
+                  <Icon name="code" size="large" />
+                </div>
+                <div className="logo-text">
+                  <span className="logo-title">{systemName}</span>
+                  <span className="logo-beta">Beta</span>
+                </div>
               </div>
             </Menu.Item>
-            <Menu.Menu position='right'>
-              <Menu.Item onClick={toggleSidebar}>
-                <Icon name={showSidebar ? 'close' : 'sidebar'} />
-              </Menu.Item>
-            </Menu.Menu>
           </div>
-        </Menu>
-        {showSidebar ? (
-          <Segment style={{ marginTop: 0, borderTop: '0' }}>
-            <Menu secondary vertical style={{ width: '100%', margin: 0 }}>
+          <div className="mobile-header-right">
+            <Button
+              icon={showSidebar ? 'close' : 'sidebar'}
+              basic
+              circular
+              onClick={toggleSidebar}
+              className="mobile-menu-toggle"
+            />
+          </div>
+        </div>
+        
+        {showSidebar && (
+          <div className="mobile-sidebar">
+            <div className="sidebar-nav">
               {renderButtons(true)}
-              <Menu.Item>
+              <div className="sidebar-auth">
                 {userState.user ? (
-                  <Button onClick={logout}>注销</Button>
+                  <Button 
+                    onClick={logout}
+                    className="auth-btn logout-btn"
+                    fluid
+                  >
+                    <Icon name="sign-out" />
+                    注销
+                  </Button>
                 ) : (
-                  <>
+                  <div className="auth-buttons">
                     <Button
                       onClick={() => {
                         setShowSidebar(false);
                         navigate('/login');
                       }}
+                      className="auth-btn login-btn"
+                      fluid
                     >
+                      <Icon name="sign-in" />
                       登录
                     </Button>
                     <Button
@@ -150,57 +156,84 @@ const Header = () => {
                         setShowSidebar(false);
                         navigate('/register');
                       }}
+                      className="auth-btn register-btn"
+                      fluid
                     >
+                      <Icon name="user plus" />
                       注册
                     </Button>
-                  </>
+                  </div>
                 )}
-              </Menu.Item>
-            </Menu>
-          </Segment>
-        ) : (
-          <></>
+              </div>
+            </div>
+          </div>
         )}
-      </>
+      </header>
     );
   }
 
   return (
-    <>
-              <Menu borderless style={{ borderTop: 'none', width: '100%' }}>
-          <div style={{ width: '100%', padding: '0 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Menu.Item as={Link} to='/' className={'hide-on-mobile'}>
-                <img src='/logo.png' alt='logo' style={{ marginRight: '0.75em' }} />
-                <div style={{ fontSize: '20px' }}>
-                  <b>{systemName}</b>
-                </div>
-              </Menu.Item>
-              {renderButtons(false)}
+    <header className="desktop-header">
+      <div className="header-container">
+        <div className="header-left">
+          <Menu.Item as={Link} to='/' className="logo-item">
+            <div className="logo-container">
+              <div className="logo-icon">
+                <Icon name="code" size="large" />
+              </div>
+              <div className="logo-text">
+                <span className="logo-title">{systemName}</span>
+                <span className="logo-beta">Beta</span>
+              </div>
             </div>
-            <Menu.Menu position='right'>
-              {userState.user ? (
-                <Dropdown
-                  text={userState.user.username}
-                  pointing
-                  className='link item'
-                >
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={logout}>注销</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              ) : (
-                <Menu.Item
-                  name='登录'
-                  as={Link}
-                  to='/login'
-                  className='btn btn-link'
-                />
-              )}
-            </Menu.Menu>
-          </div>
-        </Menu>
-    </>
+          </Menu.Item>
+          
+          <nav className="header-nav">
+            {renderButtons(false)}
+          </nav>
+        </div>
+        
+        <div className="header-right">
+          {userState.user ? (
+            <Dropdown
+              text={userState.user.username}
+              pointing
+              className='user-dropdown'
+            >
+              <Dropdown.Menu className="user-dropdown-menu">
+                <Dropdown.Item onClick={logout} className="dropdown-item">
+                  <Icon name="sign-out" />
+                  注销
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          ) : (
+            <div className="auth-buttons">
+              <Button
+                name='登录'
+                as={Link}
+                to='/login'
+                className='auth-btn login-btn'
+                basic
+              >
+                <Icon name="sign-in" />
+                登录
+              </Button>
+              <Button
+                name='注册'
+                as={Link}
+                to='/register'
+                className='auth-btn register-btn'
+                primary
+              >
+                <Icon name="user plus" />
+                注册
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
   );
 };
 

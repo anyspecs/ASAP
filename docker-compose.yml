@@ -38,6 +38,7 @@ services:
       context: .
       dockerfile: Dockerfile.backend.debian
     container_name: asap-backend
+    user: "1000:1000"  # 添加用户映射，确保权限一致
     env_file:
       - .env
     ports:

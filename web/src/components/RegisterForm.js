@@ -7,10 +7,12 @@ import {
   Image,
   Message,
   Segment,
+  Icon,
 } from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { API, showError, showInfo, showSuccess } from '../helpers';
 import Turnstile from 'react-turnstile';
+import './RegisterForm.css';
 
 const RegisterForm = () => {
   const [inputs, setInputs] = useState({
@@ -97,96 +99,138 @@ const RegisterForm = () => {
   };
 
   return (
-    <Grid textAlign='center' style={{ marginTop: '48px' }}>
-      <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as='h2' color='' textAlign='center'>
-          <Image src='/logo.png' /> 新用户注册
-        </Header>
-        <Form size='large'>
-          <Segment>
-            <Form.Input
-              fluid
-              icon='user'
-              iconPosition='left'
-              placeholder='输入用户名，最长 12 位'
-              onChange={handleChange}
-              name='username'
-            />
-            <Form.Input
-              fluid
-              icon='lock'
-              iconPosition='left'
-              placeholder='输入密码，最短 8 位，最长 20 位'
-              onChange={handleChange}
-              name='password'
-              type='password'
-            />
-            <Form.Input
-              fluid
-              icon='lock'
-              iconPosition='left'
-              placeholder='输入密码，最短 8 位，最长 20 位'
-              onChange={handleChange}
-              name='password2'
-              type='password'
-            />
-            {showEmailVerification ? (
+    <div className="register-container">
+      <div className="register-card">
+        <div className="register-header">
+          <div className="logo-container">
+            <div className="logo-icon">
+              <Icon name="code" size="huge" />
+            </div>
+            <div className="logo-text">
+              <h1 className="logo-title">AnySpecs</h1>
+              <span className="logo-subtitle">新用户注册</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="register-form">
+          <Form size="large">
+            <div className="form-group">
+              <div className="input-wrapper">
+                <Icon name="user" className="input-icon" />
+                <Form.Input
+                  fluid
+                  placeholder="输入用户名，最长 12 位"
+                  onChange={handleChange}
+                  name="username"
+                  className="modern-input"
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="input-wrapper">
+                <Icon name="lock" className="input-icon" />
+                <Form.Input
+                  fluid
+                  placeholder="输入密码，最短 8 位，最长 20 位"
+                  onChange={handleChange}
+                  name="password"
+                  type="password"
+                  className="modern-input"
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="input-wrapper">
+                <Icon name="lock" className="input-icon" />
+                <Form.Input
+                  fluid
+                  placeholder="确认密码，最短 8 位，最长 20 位"
+                  onChange={handleChange}
+                  name="password2"
+                  type="password"
+                  className="modern-input"
+                />
+              </div>
+            </div>
+
+            {showEmailVerification && (
               <>
-                <Form.Input
-                  fluid
-                  icon='mail'
-                  iconPosition='left'
-                  placeholder='输入邮箱地址'
-                  onChange={handleChange}
-                  name='email'
-                  type='email'
-                  action={
-                    <Button onClick={sendVerificationCode} disabled={loading}>
-                      获取验证码
-                    </Button>
-                  }
-                />
-                <Form.Input
-                  fluid
-                  icon='lock'
-                  iconPosition='left'
-                  placeholder='输入验证码'
-                  onChange={handleChange}
-                  name='verification_code'
-                />
+                <div className="form-group">
+                  <div className="input-wrapper">
+                    <Icon name="mail" className="input-icon" />
+                    <Form.Input
+                      fluid
+                      placeholder="输入邮箱地址"
+                      onChange={handleChange}
+                      name="email"
+                      type="email"
+                      className="modern-input"
+                    />
+                  </div>
+                  <Button 
+                    onClick={sendVerificationCode} 
+                    disabled={loading}
+                    className="verification-btn"
+                    size="small"
+                  >
+                    <Icon name="send" />
+                    获取验证码
+                  </Button>
+                </div>
+
+                <div className="form-group">
+                  <div className="input-wrapper">
+                    <Icon name="key" className="input-icon" />
+                    <Form.Input
+                      fluid
+                      placeholder="输入验证码"
+                      onChange={handleChange}
+                      name="verification_code"
+                      className="modern-input"
+                    />
+                  </div>
+                </div>
               </>
-            ) : (
-              <></>
             )}
-            {turnstileEnabled ? (
-              <Turnstile
-                sitekey={turnstileSiteKey}
-                onVerify={(token) => {
-                  setTurnstileToken(token);
-                }}
-              />
-            ) : (
-              <></>
+
+            {turnstileEnabled && (
+              <div className="turnstile-container">
+                <Turnstile
+                  sitekey={turnstileSiteKey}
+                  onVerify={(token) => {
+                    setTurnstileToken(token);
+                  }}
+                />
+              </div>
             )}
+
             <Button
-              color=''
+              color=""
               fluid
-              size='large'
+              size="large"
               onClick={handleSubmit}
               loading={loading}
+              className="register-button"
             >
+              <Icon name="user plus" />
               注册
             </Button>
-          </Segment>
-        </Form>
-        <Message>
-          已有账户？
-          <Link to='/login' className='btn btn-link'>
-            点击登录
-          </Link>
-        </Message>
-      </Grid.Column>
-    </Grid>
+          </Form>
+        </div>
+
+        <div className="register-footer">
+          <div className="footer-links">
+            <span className="footer-text">已有账户？</span>
+            <Link to="/login" className="footer-link">
+              点击登录
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

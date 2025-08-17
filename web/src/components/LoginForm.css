@@ -1,0 +1,374 @@
+/* LoginForm Component Styles - 参考 sample 的现代化设计 */
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(245,245,245,0.8));
+  position: relative;
+  overflow: hidden;
+}
+
+.login-container::before {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  right: -10rem;
+  width: 20rem;
+  height: 20rem;
+  background: radial-gradient(circle, rgba(59,130,246,0.1), transparent 70%);
+  border-radius: 50%;
+  filter: blur(3rem);
+}
+
+.login-container::after {
+  content: "";
+  position: absolute;
+  bottom: -10rem;
+  left: -10rem;
+  width: 15rem;
+  height: 15rem;
+  background: radial-gradient(circle, rgba(20,184,166,0.1), transparent 70%);
+  border-radius: 50%;
+  filter: blur(3rem);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(120,120,120,0.2);
+  border-radius: 1.5rem;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Login Header */
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: 1rem;
+  color: white;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.3);
+}
+
+.logo-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.logo-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Login Form */
+.login-form {
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  color: #9ca3af;
+  z-index: 2;
+}
+
+.modern-input {
+  width: 100% !important;
+  padding: 0.875rem 1rem 0.875rem 3rem !important;
+  border: 1px solid rgba(120,120,120,0.3) !important;
+  border-radius: 0.75rem !important;
+  font-size: 1rem !important;
+  background: rgba(255,255,255,0.8) !important;
+  transition: all 0.2s ease !important;
+}
+
+.modern-input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1) !important;
+  background: white !important;
+}
+
+.modern-input::placeholder {
+  color: #9ca3af !important;
+}
+
+.login-button {
+  width: 100% !important;
+  background: #0a0a0a !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  padding: 0.875rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+}
+
+.login-button:hover {
+  background: #1a1a1a !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* Login Footer */
+.login-footer {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  color: #6b7280 !important;
+  text-decoration: none !important;
+  font-size: 0.875rem !important;
+  transition: color 0.2s ease !important;
+}
+
+.footer-link:hover {
+  color: #3b82f6 !important;
+}
+
+.footer-separator {
+  color: #d1d5db;
+  font-size: 0.875rem;
+}
+
+/* Social Login */
+.social-login {
+  text-align: center;
+}
+
+.social-divider {
+  margin: 1.5rem 0 !important;
+}
+
+.divider-text {
+  background: rgba(255,255,255,0.9) !important;
+  padding: 0 1rem !important;
+  color: #6b7280 !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.social-btn {
+  width: 3.5rem !important;
+  height: 3.5rem !important;
+  border: 1px solid rgba(120,120,120,0.3) !important;
+  border-radius: 50% !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.github-btn {
+  background: #24292e !important;
+  color: white !important;
+  border-color: #24292e !important;
+}
+
+.github-btn:hover {
+  background: #2f363d !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(36,41,46,0.3);
+}
+
+.wechat-btn {
+  background: #07c160 !important;
+  color: white !important;
+  border-color: #07c160 !important;
+}
+
+.wechat-btn:hover {
+  background: #06ad56 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(7,193,96,0.3);
+}
+
+/* WeChat Modal */
+.wechat-modal {
+  border-radius: 1rem !important;
+}
+
+.modal-content {
+  padding: 1.5rem !important;
+}
+
+.wechat-content {
+  text-align: center;
+}
+
+.qr-code-container {
+  margin-bottom: 1.5rem;
+}
+
+.qr-code {
+  max-width: 200px !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.wechat-instructions {
+  margin-bottom: 1.5rem;
+}
+
+.instruction-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.wechat-form {
+  margin-top: 1rem;
+}
+
+.wechat-login-btn {
+  background: #07c160 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  padding: 0.875rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+}
+
+.wechat-login-btn:hover {
+  background: #06ad56 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(7,193,96,0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+  }
+  
+  .logo-title {
+    font-size: 1.75rem;
+  }
+  
+  .logo-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  
+  .social-buttons {
+    gap: 0.75rem;
+  }
+  
+  .social-btn {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .login-container {
+    background: linear-gradient(135deg, rgba(23,23,23,0.8), rgba(10,10,10,0.8));
+  }
+  
+  .login-card {
+    background: rgba(23,23,23,0.9);
+    border-color: rgba(120,120,120,0.3);
+  }
+  
+  .logo-title {
+    color: #f9fafb;
+  }
+  
+  .logo-subtitle {
+    color: #d1d5db;
+  }
+  
+  .modern-input {
+    background: rgba(23,23,23,0.8) !important;
+    border-color: rgba(120,120,120,0.4) !important;
+    color: #f9fafb !important;
+  }
+  
+  .modern-input:focus {
+    background: rgba(23,23,23,0.95) !important;
+  }
+  
+  .modern-input::placeholder {
+    color: #9ca3af !important;
+  }
+  
+  .footer-link {
+    color: #d1d5db !important;
+  }
+  
+  .footer-link:hover {
+    color: #60a5fa !important;
+  }
+  
+  .divider-text {
+    background: rgba(23,23,23,0.9) !important;
+    color: #d1d5db !important;
+  }
+}
+
