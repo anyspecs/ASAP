@@ -40,7 +40,7 @@
   align-items: center;
   justify-content: center; /* 改为居中对齐 */
   gap: 2rem; /* 增加间距 */
-  padding: 1.5rem 2rem 1.5rem 2rem; /* 增加上下padding */
+  padding: 0.75rem 2rem 0.75rem 2rem; /* 减半上下padding */
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -94,7 +94,7 @@
   }
   
   .footer-content {
-    padding: 1.5rem 1rem 1.5rem 1rem; /* 保持上下padding */
+    padding: 0.75rem 1rem 0.75rem 1rem; /* 减半上下padding */
     flex-direction: column;
     text-align: center;
     gap: 1.5rem;
@@ -122,7 +122,7 @@
   
   .footer-content {
     gap: 1.5rem;
-    padding: 1.5rem 1rem 1.5rem 1rem; /* 保持上下padding */
+    padding: 0.375rem 0.5rem 0.375rem 0.5rem; /* 减半上下padding */
   }
   
   .footer-links {
