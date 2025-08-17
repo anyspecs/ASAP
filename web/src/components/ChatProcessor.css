@@ -6,66 +6,13 @@
   margin: 0 auto;
 }
 
-/* 进度指示器区域 */
-.progress-section {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.main-progress {
-  margin-bottom: 20px;
-}
-
-.progress-steps {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  min-width: 120px;
-}
-
-.step.active {
-  background-color: #e3f2fd;
-  color: #1976d2;
-}
-
-.step:not(.active) {
-  color: #666;
-}
-
-.step .icon {
-  margin-bottom: 8px;
-}
-
-.step span {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.step-arrow {
-  margin: 0 20px;
-  color: #ccc;
-}
-
 /* 主内容区域 - 三列布局 */
 .main-content {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
-  height: calc(100vh - 200px);
+  height: 100vh;
+  margin-bottom: 20px;
 }
 
 /* 左侧：上传文件区域 */
@@ -369,19 +316,7 @@
     gap: 15px;
   }
   
-  .progress-steps {
-    flex-direction: column;
-  }
-  
-  .step-arrow {
-    transform: rotate(90deg);
-    margin: 10px 0;
-  }
-  
-  .step {
-    min-width: auto;
-    width: 100%;
-  }
+
   
   .dropzone {
     padding: 30px 15px;

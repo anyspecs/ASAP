@@ -59,7 +59,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
+  text-align: center;
 }
 
 .logo-icon {
@@ -68,10 +70,14 @@
   justify-content: center;
   width: 4rem;
   height: 4rem;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   border-radius: 1rem;
-  color: white;
-  box-shadow: 0 8px 24px rgba(59,130,246,0.3);
+  overflow: hidden;
+}
+
+.custom-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .logo-title {
@@ -206,11 +212,26 @@
 }
 
 .social-btn {
-  width: 3.5rem !important;
-  height: 3.5rem !important;
+  width: 3.25rem !important;
+  height: 3.25rem !important;
   border: 1px solid rgba(120,120,120,0.3) !important;
   border-radius: 50% !important;
   transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  min-width: 3.25rem !important;
+  min-height: 3.25rem !important;
+  box-sizing: border-box !important;
+}
+
+.social-btn .icon {
+  font-size: 1.75rem !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -220,6 +241,12 @@
   background: #24292e !important;
   color: white !important;
   border-color: #24292e !important;
+  width: 3.25rem !important;
+  height: 3.25rem !important;
+  min-width: 3.25rem !important;
+  min-height: 3.25rem !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .github-btn:hover {
@@ -315,13 +342,27 @@
     height: 3.5rem;
   }
   
+  .custom-logo {
+    width: 100%;
+    height: 100%;
+  }
+  
   .social-buttons {
     gap: 0.75rem;
   }
   
   .social-btn {
-    width: 3rem !important;
-    height: 3rem !important;
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    min-width: 2.75rem !important;
+    min-height: 2.75rem !important;
+    padding: 0 !important;
+  }
+  
+  .social-btn .icon {
+    font-size: 1.125rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }
 

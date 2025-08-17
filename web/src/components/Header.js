@@ -103,9 +103,9 @@ const Header = () => {
           <div className="mobile-header-left">
             <Menu.Item as={Link} to='/' className="logo-item">
               <div className="logo-container">
-                <div className="logo-icon">
-                  <Icon name="code" size="large" />
-                </div>
+                            <div className="logo-icon">
+              <img src="/logo.png" alt="Logo" className="custom-logo" />
+            </div>
                 <div className="logo-text">
                   <span className="logo-title">{systemName}</span>
                   <span className="logo-beta">Beta</span>
@@ -179,7 +179,7 @@ const Header = () => {
           <Menu.Item as={Link} to='/' className="logo-item">
             <div className="logo-container">
               <div className="logo-icon">
-                <Icon name="code" size="large" />
+                <img src="/logo.png" alt="Logo" className="custom-logo" />
               </div>
               <div className="logo-text">
                 <span className="logo-title">{systemName}</span>

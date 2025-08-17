@@ -99,7 +99,7 @@ const LoginForm = () => {
         <div className="login-header">
           <div className="logo-container">
             <div className="logo-icon">
-              <Icon name="code" size="huge" />
+              <img src="/logo.png" alt="Logo" className="custom-logo" />
             </div>
             <div className="logo-text">
               <h1 className="logo-title">AnySpecs</h1>
