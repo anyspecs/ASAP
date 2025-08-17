@@ -44,7 +44,7 @@ const Home = () => {
             把复杂 <span className="portrait-break"><br /></span> 化为可复用的规范
           </h1>
           <p className="hero-subtitle">
-            将对话、文档与上下文一键提炼成 .specs / .parse，让团队与模型在任意环境继续无缝协作。
+            将对话、文档与上下文一键提炼成 .specs，让团队与模型在任意环境继续无缝协作。
           </p>
           <div className="hero-actions">
             <Button size="large" primary className="hero-btn-primary">
@@ -78,7 +78,7 @@ const Home = () => {
         <div className="section-card">
           <h3 className="section-title">关于 AnySpecs</h3>
           <p className="section-description">
-            AnySpecs 是面向"上下文工程"的统一规范与工具链。我们将对话与文档压缩为可复用的 <code>.specs</code> / <code>.parse</code>，以结构化方式在团队、模型与项目之间顺畅迁移与延续。
+            AnySpecs 是面向"上下文工程"的统一规范与工具链。我们将对话与文档压缩为可复用的 <code>.specs</code>，以结构化方式在团队、模型与项目之间顺畅迁移与延续。
           </p>
           <div className="features-grid">
             <div className="feature-card">
