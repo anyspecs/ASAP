@@ -3,6 +3,7 @@ import { Card, Grid, Header, Segment, Button, Icon } from 'semantic-ui-react';
 import { API, showError, showNotice, timestamp2string } from '../../helpers';
 import { StatusContext } from '../../context/Status';
 import './Home.css';
+import HeroDemo from './HeroDemo';
 
 const Home = () => {
   const [statusState, statusDispatch] = useContext(StatusContext);
@@ -64,10 +65,7 @@ const Home = () => {
               <div className="demo-time">Demo • 00:42</div>
             </div>
             <div className="demo-content">
-              <div className="demo-placeholder">
-                <Icon name="code" size="huge" />
-                <p>交互式演示</p>
-              </div>
+              <HeroDemo />
             </div>
           </div>
         </div>

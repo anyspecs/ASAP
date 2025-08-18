@@ -27,3 +27,6 @@ cloudflare/
 
 ssl/
 .env
+__pycache__/
+upload_client.py
+sample/

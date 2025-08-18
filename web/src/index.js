@@ -18,6 +18,7 @@ root.render(
     <StatusProvider>
       <UserProvider>
         <BrowserRouter>
+          <div className="bg-overlay" />
           <Header />
           <Container className={'main-content'}>
             <App />
