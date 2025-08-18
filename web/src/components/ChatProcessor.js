@@ -99,7 +99,7 @@ const ChatProcessor = () => {
               {isDragActive ? '释放文件以上传' : '拖放文件到此处或粘贴剪切板内容'}
             </Header>
             <p className="dropzone-description">
-              支持50+种文件格式：文档、代码、配置、数据文件等
+              支持多种文件格式：markdown，json，html 等
             </p>
             <Button className="browse-button">
               <Icon name="folder open" />

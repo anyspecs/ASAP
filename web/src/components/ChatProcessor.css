@@ -1,7 +1,7 @@
 .chat-processor-container {
   padding: 20px;
   background-color: #f8f9fa;
-  min-height: 100vh;
+  min-height: 66.6667vh;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -11,7 +11,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
-  height: 100vh;
+  height: 66.6667vh;
   margin-bottom: 20px;
 }
 
