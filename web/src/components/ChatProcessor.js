@@ -9,12 +9,15 @@ import {
 } from 'semantic-ui-react';
 import { useDropzone } from 'react-dropzone';
 import { showSuccess, showError } from '../helpers';
+import { API } from '../helpers';
+import { authHeader } from '../helpers/auth-header';
 import './ChatProcessor.css';
 
 const ChatProcessor = () => {
   const [files, setFiles] = useState([]);
   const [processing, setProcessing] = useState(false);
   const [results, setResults] = useState([]);
+  const [finished, setFinished] = useState(false);
 
   // 后端代理已持有密钥，前端无需校验
 
@@ -27,6 +30,7 @@ const ChatProcessor = () => {
       status: 'pending'
     }));
     setFiles(prev => [...prev, ...newFiles]);
+    setFinished(false);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -122,7 +126,60 @@ const ChatProcessor = () => {
       }
     }
     setProcessing(false);
+    setFinished(true);
     showSuccess('处理完成');
+  };
+
+  // 组装可下载/上传的文本内容
+  function buildResultText() {
+    if (!results || results.length === 0) return '';
+    const sections = results.map(r => {
+      const code = r.outputs?.output_code || '';
+      const chat = r.outputs?.output_chat || '';
+      let s = `# ${r.fileName}\n\n`;
+      if (chat) s += `${chat}\n\n`;
+      if (code) s += '```\n' + code + '\n```\n\n';
+      return s;
+    });
+    return sections.join('\n---\n\n');
+  }
+
+  function getDownloadName() {
+    if (results && results.length === 1) {
+      const base = results[0].fileName.replace(/\.[^.]+$/, '');
+      return `${base}.md`;
+    }
+    return `processed_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.md`;
+  }
+
+  const handleDownload = () => {
+    const content = buildResultText();
+    const filename = getDownloadName();
+    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const handleUpload = async () => {
+    try {
+      const content = buildResultText();
+      if (!content) { showError('暂无可上传的处理结果'); return; }
+      const filename = getDownloadName();
+      const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+      const file = new File([blob], filename, { type: 'text/markdown' });
+      const form = new FormData();
+      form.append('file', file);
+      const res = await API.post(`/api/file`, form, {
+        headers: { ...authHeader(), 'Content-Type': 'multipart/form-data' },
+      });
+      const { success, message } = res.data;
+      if (success) showSuccess('结果已上传到文件库'); else showError(message || '上传失败');
+    } catch (e) {
+      showError(e.message || '上传失败');
+    }
   };
 
   return (
@@ -202,12 +259,22 @@ const ChatProcessor = () => {
               primary 
               size="large" 
               onClick={startProcessing}
-              disabled={files.length === 0 || processing}
+              disabled={files.length === 0 || processing || finished}
               loading={processing}
               className="process-button"
             >
               {processing ? '处理中...' : '开始处理'}
             </Button>
+            {finished && (
+              <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
+                <Button basic onClick={handleDownload} icon labelPosition='left'>
+                  <Icon name='download' /> 下载处理结果
+                </Button>
+                <Button basic color='blue' onClick={handleUpload} icon labelPosition='left'>
+                  <Icon name='cloud upload' /> 上传到文件库
+                </Button>
+              </div>
+            )}
           </div>
         </div>
 

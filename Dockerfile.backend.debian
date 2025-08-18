@@ -26,12 +26,8 @@ RUN go build \
 # 生产阶段 - 使用轻量级的 Debian 镜像
 FROM debian:bullseye-slim
 
-# 安装运行时依赖
-RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    sqlite3 \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
+# 复制 CA 证书（用于 HTTPS 请求），避免在运行阶段拉取 apt 包
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 # 创建非root用户
 RUN groupadd -g 1000 backend && \
@@ -51,9 +47,7 @@ WORKDIR /data
 # 切换到非root用户
 USER backend
 
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/status || exit 1
+# 省略运行阶段的健康检查，避免额外系统依赖
 
 # 暴露端口
 EXPOSE 3000
