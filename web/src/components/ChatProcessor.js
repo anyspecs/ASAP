@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { 
   Button, 
   Icon, 
@@ -16,11 +16,14 @@ const ChatProcessor = () => {
   const [processing, setProcessing] = useState(false);
   const [results, setResults] = useState([]);
 
+  // 后端代理已持有密钥，前端无需校验
+
   const onDrop = useCallback((acceptedFiles) => {
     const newFiles = acceptedFiles.map(file => ({
       id: Date.now() + Math.random(),
       name: file.name,
       size: file.size,
+      blob: file,
       status: 'pending'
     }));
     setFiles(prev => [...prev, ...newFiles]);
@@ -44,39 +47,82 @@ const ChatProcessor = () => {
     setFiles(prev => prev.filter(f => f.id !== fileId));
   };
 
+  // 上传到 Dify Files API
+  async function uploadToDify(fileObj) {
+    const file = fileObj.blob;
+    const original = fileObj.name || file.name;
+    const clean = original.replace(/[:<>"|?*]/g, '_');
+    const ext = (clean.split('.').pop() || '').toLowerCase();
+    let fileType = 'TXT';
+    let mime = 'text/plain';
+    if (ext === 'pdf') { fileType = 'PDF'; mime = 'application/pdf'; }
+
+    const form = new FormData();
+    form.append('file', file, clean);
+    form.append('user', 'chat-user');
+    form.append('type', fileType);
+
+    // 通过后端代理，避免在前端暴露 Token
+    const resp = await fetch(`/api/dify/files/upload`, { method: 'POST', body: form });
+    if (resp.status !== 201) {
+      const txt = await resp.text();
+      throw new Error(`上传失败(${resp.status}): ${txt}`);
+    }
+    const data = await resp.json();
+    return data.id;
+  }
+
+  // 运行 Dify Workflow
+  async function runWorkflow(fileId) {
+    const payload = {
+      inputs: {
+        files: {
+          transfer_method: 'local_file',
+          upload_file_id: fileId,
+          type: 'document',
+        },
+      },
+      response_mode: 'blocking',
+      user: 'chat-user',
+    };
+    const resp = await fetch(`/api/dify/workflows/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    if (resp.status !== 200) {
+      const txt = await resp.text();
+      throw new Error(`workflow失败(${resp.status}): ${txt}`);
+    }
+    const data = await resp.json();
+    return data;
+  }
+
   const startProcessing = async () => {
     if (files.length === 0) {
-      showError('请先上传文件');
+      showError('请先选择文件');
       return;
     }
-
     setProcessing(true);
-    
-    // 更新所有文件状态为处理中
     setFiles(prev => prev.map(f => ({ ...f, status: 'processing' })));
 
-    // 模拟AI处理过程
-    for (let i = 0; i < files.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // 更新文件状态为完成
-      setFiles(prev => prev.map((f, index) => 
-        index === i ? { ...f, status: 'completed' } : f
-      ));
-
-      // 生成模拟结果
-      const result = {
-        id: Date.now() + Math.random(),
-        fileName: files[i].name,
-        summary: `这是对文件 ${files[i].name} 的AI分析总结...`,
-        timestamp: new Date().toLocaleString()
-      };
-      
-      setResults(prev => [...prev, result]);
+    for (let idx = 0; idx < files.length; idx++) {
+      const f = files[idx];
+      try {
+        const fileId = await uploadToDify(f);
+        const wf = await runWorkflow(fileId);
+        const outputs = (wf?.data?.outputs) || {};
+        const result = {
+          id: Date.now() + Math.random(),
+          fileName: f.name,
+          outputs,
+          timestamp: new Date().toLocaleString(),
+        };
+        setResults(prev => [result, ...prev]);
+        setFiles(prev => prev.map((x) => (x.id === f.id ? { ...x, status: 'completed' } : x)));
+      } catch (e) {
+        showError(`${f.name} 处理失败: ${e.message}`);
+        setFiles(prev => prev.map((x) => (x.id === f.id ? { ...x, status: 'failed' } : x)));
+      }
     }
-
     setProcessing(false);
-    showSuccess('所有文件处理完成！');
+    showSuccess('处理完成');
   };
 
   return (
@@ -178,20 +224,32 @@ const ChatProcessor = () => {
               </div>
             ) : (
               <div className="results-list">
-                {results.map((result) => (
-                  <Card key={result.id} className="result-card">
-                    <Card.Content>
-                      <Card.Header>{result.fileName}</Card.Header>
-                      <Card.Meta>处理完成</Card.Meta>
-                      <Card.Description>
-                        {result.summary}
-                      </Card.Description>
-                    </Card.Content>
-                    <Card.Content extra>
-                      <small className="result-timestamp">{result.timestamp}</small>
-                    </Card.Content>
-                  </Card>
-                ))}
+                {results.map((result) => {
+                  const code = result.outputs?.output_code;
+                  const chat = result.outputs?.output_chat;
+                  return (
+                    <Card key={result.id} className="result-card">
+                      <Card.Content>
+                        <Card.Header>{result.fileName}</Card.Header>
+                        <Card.Meta>处理完成</Card.Meta>
+                        <Card.Description>
+                          {chat && (<div style={{ whiteSpace: 'pre-wrap', marginBottom: 12 }}>{chat}</div>)}
+                          {code && (
+                            <pre style={{ background: '#f5f5f5', padding: 12, borderRadius: 6, overflowX: 'auto' }}>
+                              {code}
+                            </pre>
+                          )}
+                          {!chat && !code && (
+                            <div style={{ color: '#777' }}>无输出</div>
+                          )}
+                        </Card.Description>
+                      </Card.Content>
+                      <Card.Content extra>
+                        <small className="result-timestamp">{result.timestamp}</small>
+                      </Card.Content>
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </div>

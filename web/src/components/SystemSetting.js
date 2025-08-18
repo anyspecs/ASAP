@@ -25,6 +25,8 @@ const SystemSetting = () => {
     TurnstileSiteKey: '',
     TurnstileSecretKey: '',
     RegisterEnabled: '',
+    DifyApiBase: '',
+    DifyApiToken: '',
   });
   const [originInputs, setOriginInputs] = useState({});
   let [loading, setLoading] = useState(false);
@@ -87,7 +89,9 @@ const SystemSetting = () => {
       name === 'WeChatServerToken' ||
       name === 'WeChatAccountQRCodeImageURL' ||
       name === 'TurnstileSiteKey' ||
-      name === 'TurnstileSecretKey'
+      name === 'TurnstileSecretKey' ||
+      name === 'DifyApiBase' ||
+      name === 'DifyApiToken'
     ) {
       setInputs((inputs) => ({ ...inputs, [name]: value }));
     } else {
@@ -166,6 +170,18 @@ const SystemSetting = () => {
       inputs.TurnstileSecretKey !== ''
     ) {
       await updateOption('TurnstileSecretKey', inputs.TurnstileSecretKey);
+    }
+  };
+
+  const submitDify = async () => {
+    if (originInputs['DifyApiBase'] !== inputs.DifyApiBase) {
+      await updateOption('DifyApiBase', inputs.DifyApiBase);
+    }
+    if (
+      originInputs['DifyApiToken'] !== inputs.DifyApiToken &&
+      inputs.DifyApiToken !== ''
+    ) {
+      await updateOption('DifyApiToken', inputs.DifyApiToken);
     }
   };
 
@@ -390,6 +406,28 @@ const SystemSetting = () => {
           <Form.Button onClick={submitTurnstile}>
             保存 Turnstile 设置
           </Form.Button>
+          <Divider />
+          <Header as='h3'>配置 Dify</Header>
+          <Form.Group widths={3}>
+            <Form.Input
+              label='Dify API Base'
+              name='DifyApiBase'
+              onChange={handleInputChange}
+              autoComplete='new-password'
+              value={inputs.DifyApiBase}
+              placeholder='例如：https://api.dify.ai/v1'
+            />
+            <Form.Input
+              label='Dify API Token'
+              name='DifyApiToken'
+              type='password'
+              onChange={handleInputChange}
+              autoComplete='new-password'
+              value={inputs.DifyApiToken}
+              placeholder='敏感信息不会发送到前端显示'
+            />
+          </Form.Group>
+          <Form.Button onClick={submitDify}>保存 Dify 设置</Form.Button>
         </Form>
       </Grid.Column>
     </Grid>

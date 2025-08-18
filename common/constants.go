@@ -14,6 +14,10 @@ var ServerAddress = "http://localhost:3000"
 var Footer = ""
 var HomePageLink = ""
 
+// Dify integration defaults
+var DifyApiBase = "https://api.dify.ai/v1"
+var DifyApiToken = ""
+
 // Any options with "Secret", "Token" in its key won't be return by GetOptions
 
 var SessionSecret = uuid.New().String()

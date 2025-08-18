@@ -40,6 +40,9 @@ func InitOptionMap() {
 	common.OptionMap["About"] = ""
 	common.OptionMap["Footer"] = common.Footer
 	common.OptionMap["HomePageLink"] = common.HomePageLink
+	// Dify
+	common.OptionMap["DifyApiBase"] = common.DifyApiBase
+	common.OptionMap["DifyApiToken"] = common.DifyApiToken
 	common.OptionMap["SystemName"] = common.SystemName
 	common.OptionMap["ServerAddress"] = ""
 	common.OptionMap["GitHubClientId"] = ""
@@ -129,6 +132,10 @@ func updateOptionMap(key string, value string) {
 		common.Footer = value
 	case "HomePageLink":
 		common.HomePageLink = value
+	case "DifyApiBase":
+		common.DifyApiBase = value
+	case "DifyApiToken":
+		common.DifyApiToken = value
 	case "SystemName":
 		common.SystemName = value
 	case "WeChatServerAddress":

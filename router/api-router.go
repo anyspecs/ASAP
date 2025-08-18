@@ -63,5 +63,13 @@ func SetApiRouter(router *gin.Engine) {
 			fileRoute.POST("/", middleware.UploadRateLimit(), controller.UploadFile)
 			fileRoute.DELETE("/:id", controller.DeleteFile)
 		}
+
+		// Dify proxy routes (user auth required)
+		difyRoute := apiRouter.Group("/dify")
+		difyRoute.Use(middleware.UserAuth())
+		{
+			difyRoute.POST("/files/upload", controller.DifyUpload)
+			difyRoute.POST("/workflows/run", controller.DifyRunWorkflow)
+		}
 	}
 }
