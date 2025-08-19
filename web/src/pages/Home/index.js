@@ -109,9 +109,14 @@ const Home = () => {
         <h3 className="section-title">如何使用</h3>
         <div className="steps-container">
           <div className="steps-visual">
-            <div className="video-placeholder">
-              <Icon name="play" size="huge" />
-            </div>
+            <iframe
+              className="video-placeholder"
+              src="https://www.youtube.com/embed/pA8J6TNmfzY?autoplay=1&rel=0&modestbranding=1"
+              title="YouTube video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
             <p className="video-caption">按步骤完成：登录 → 上传原文件 → 生成规范 → 导出/发布到广场。</p>
           </div>
           <div className="steps-list">
